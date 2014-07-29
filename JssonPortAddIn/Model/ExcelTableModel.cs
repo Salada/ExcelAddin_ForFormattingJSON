@@ -7,7 +7,7 @@ using Newtonsoft.Json.Linq;
 
 namespace JssonPortAddIn
 {
-    class ExcelTableClass
+    class ExcelTableModel
     {
         private dynamic worksheet; // this is com object. then, must only use dynamic type.
         
@@ -35,13 +35,13 @@ namespace JssonPortAddIn
             set;
         }
 
-        public ExcelTableClass()
+        public ExcelTableModel()
         {
             throw new NotImplementedException();
         }
 
 
-        public ExcelTableClass(dynamic worksheet)
+        public ExcelTableModel(dynamic worksheet)
         {
             this.worksheet = worksheet;
             this.dataObjects = new List<SimpleExpandoObject>();

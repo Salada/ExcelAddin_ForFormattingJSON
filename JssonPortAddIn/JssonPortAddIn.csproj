@@ -111,6 +111,7 @@
   -->
   <ItemGroup>
     <Reference Include="Accessibility" />
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -157,11 +158,12 @@
     can be found.
   -->
   <ItemGroup>
-    <Compile Include="ExcelTableClass.cs" />
-    <Compile Include="NameCollection.cs" />
+    <Compile Include="Model\ExcelTableModel.cs" />
+    <Compile Include="Model\NameCollection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Model\WorkSheetModel.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -189,7 +191,7 @@
     <Compile Include="RbnFileManage.Designer.cs">
       <DependentUpon>RbnFileManage.cs</DependentUpon>
     </Compile>
-    <Compile Include="SimpleExpandoObject.cs" />
+    <Compile Include="Model\SimpleExpandoObject.cs" />
     <Compile Include="ThisAddIn.cs">
       <SubType>Code</SubType>
     </Compile>

@@ -23,7 +23,7 @@ namespace JssonPortAddIn
 
             dynamic a = worksheets[2];
 
-            var table = new ExcelTableClass(worksheets[2]);
+            var table = new ExcelTableModel(worksheets[2]);
             MessageBox.Show("Hello");
         }
     }
