@@ -7,11 +7,15 @@ using System.Windows.Forms;
 using System.Dynamic;
 using System.Collections;
 using JssonPortAddIn.Model;
+using System.IO;
+using Newtonsoft.Json;
 
 namespace JssonPortAddIn
 {
     public partial class RbnFileManage
     {
+        private string savedFileDirectory;
+        private string savedFileName;
         private void RbnFileManage_Load(object sender, RibbonUIEventArgs e)
         {
 
@@ -21,12 +25,35 @@ namespace JssonPortAddIn
         {
 
             var excel = new ExcelFileModel();
-            MessageBox.Show(excel.ToJsonObject().ToString());
+
+            SaveFileDialog saveFileDialog1 = new SaveFileDialog();
+            saveFileDialog1.Filter = "Custom json format|*.jsone";
+            saveFileDialog1.Title = "Save file";
+            saveFileDialog1.FileName = this.savedFileName;
+            saveFileDialog1.InitialDirectory = this.savedFileDirectory;
+            saveFileDialog1.ShowDialog();
+
+            if (saveFileDialog1.FileName != "")
+            {
+                using(Stream fs = saveFileDialog1.OpenFile())
+                using(StreamWriter file = new StreamWriter(fs))
+                using(JsonTextWriter writer = new JsonTextWriter(file))
+                {
+                    if (!saveFileDialog1.FileName.EndsWith(".jsone"))
+                        saveFileDialog1.FileName += ".jsone";
+
+                    this.savedFileName = saveFileDialog1.FileName.Substring(saveFileDialog1.FileName.LastIndexOf('\\') + 1);
+                    this.savedFileDirectory = saveFileDialog1.InitialDirectory;
+                    file.Write(excel.ToJsonObject(this.savedFileName).ToString());
+                }
+            }
+
+            //MessageBox.Show(excel.ToJsonObject().ToString());
         }
 
         private void button2_Click(object sender, RibbonControlEventArgs e)
         {
-
+            
         }
     }
 }

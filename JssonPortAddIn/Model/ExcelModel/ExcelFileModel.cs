@@ -20,7 +20,7 @@ namespace JssonPortAddIn.Model
 
             InitializeObject();
         }
-        
+
         private void InitializeObject()
         {
             dynamic worksheets = this.baseInfo.WorkSheets;
@@ -33,8 +33,13 @@ namespace JssonPortAddIn.Model
 
         public Newtonsoft.Json.Linq.JObject ToJsonObject()
         {
+            return this.ToJsonObject("ExcelJsonFormatInfo");
+        }
+
+        public Newtonsoft.Json.Linq.JObject ToJsonObject(string fileName)
+        {
             return new JObject(
-                new JProperty("ExcelJsonFormatInfo",
+                new JProperty(fileName,
                     new JArray(
                         from o in list
                         select o.ToJsonObject()
