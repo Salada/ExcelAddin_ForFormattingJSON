@@ -5,14 +5,16 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using JssonPortAddIn.Model.ExcelModel;
+using Excel = Microsoft.Office.Tools.Excel;
 
 namespace JssonPortAddIn
 {
     class ExcelTableModel : IConvertableJson
     {
-        private WorkSheetModel parentModel; // this is com object. then, must only use dynamic type.
+        private ExcelWorkSheetModel parentModel; // this is com object. then, must only use dynamic type.
         
         private List<SimpleExpandoObject> dataObjects;
+
 
         public NameCollection RowNames
         {
@@ -33,11 +35,58 @@ namespace JssonPortAddIn
         }
 
 
-        public ExcelTableModel(WorkSheetModel parentModel) : this()
+        public ExcelTableModel(ExcelWorkSheetModel parentModel) : this()
         {
             this.parentModel = parentModel;
 
             initializeObject();
+        }
+
+        public ExcelTableModel(ExcelWorkSheetModel parentModel, JObject obj) : this()
+        {
+            
+            this.parentModel = parentModel;
+            this.TableName = obj["TableName"].ToString();
+
+            decimal row = 1;
+            decimal col = 1;
+
+            decimal rowBase = row;
+            decimal colBase = col;
+
+            decimal colLast = col;
+            decimal rowLast = row;
+
+            
+            dynamic worksheet = this.parentModel.WorkSheet;
+            dynamic application = worksheet.Application;
+
+            foreach (JObject iterableObj in obj["Items"])
+            {
+                if (row == rowBase)
+                {
+                    foreach (JProperty property in iterableObj.Properties())
+                    {
+                        worksheet.Cells[row, col].FormulaLocal = property.Name;
+                        col++;
+                    }
+                    colLast = col - 1;
+                    row++; col = colBase;
+                }
+
+                foreach (JProperty property in iterableObj.Properties())
+                {
+                    worksheet.Cells[row, col].FormulaLocal = property.Value.ToString();
+                    col++;
+                }
+                row++; col = colBase;
+            }
+            rowLast = row - 1;
+
+            dynamic activeSheet = worksheet.Application.ActiveSheet;
+            worksheet.ListObjects.Add(
+                Source : activeSheet.Range(activeSheet.Cells(rowBase, colBase), activeSheet.Cells(rowLast, colLast)) // Range
+                ).Name = this.TableName;
         }
 
         private void initializeObject()
@@ -68,15 +117,15 @@ namespace JssonPortAddIn
             }
         }
 
-        public JObject ToJsonObject()
+        public JToken ToJsonObject()
         {
-            JObject rss = new JObject();
-
-            JArray dataArr = new JArray(from p in this.dataObjects 
-                                        select p.ToJsonObject());
-
-            rss.Add(new JProperty(TableName, dataArr));
-            return rss;
+            return new JObject(
+                new JProperty("TableName", TableName),
+                new JProperty("Items", new JArray(from p in this.dataObjects 
+                                                    select p.ToJsonObject()
+                                )
+                            )
+                );
         }
             
     }

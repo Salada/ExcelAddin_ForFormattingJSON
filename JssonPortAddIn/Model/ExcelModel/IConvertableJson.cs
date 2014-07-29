@@ -9,6 +9,6 @@ namespace JssonPortAddIn.Model.ExcelModel
 {
     interface IConvertableJson
     {
-        JObject ToJsonObject();
+        JToken ToJsonObject();
     }
 }

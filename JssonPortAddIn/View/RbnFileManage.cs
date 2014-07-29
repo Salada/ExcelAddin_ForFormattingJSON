@@ -9,6 +9,7 @@ using System.Collections;
 using JssonPortAddIn.Model;
 using System.IO;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace JssonPortAddIn
 {
@@ -53,6 +54,23 @@ namespace JssonPortAddIn
 
         private void button2_Click(object sender, RibbonControlEventArgs e)
         {
+            JObject jsoneObject;
+
+            openFileDialog1.Filter = "Custom json format|*.jsone";
+            openFileDialog1.Title = "Load jsona file";
+
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                using(Stream fs = openFileDialog1.OpenFile())
+                using(StreamReader file = new StreamReader(fs))
+                using(JsonTextReader reader = new JsonTextReader(file))
+                {
+                    jsoneObject = (JObject)JToken.ReadFrom(reader);
+                    var excelFileModel = new ExcelFileModel(jsoneObject);
+                }
+            }
+
+            
             
         }
     }

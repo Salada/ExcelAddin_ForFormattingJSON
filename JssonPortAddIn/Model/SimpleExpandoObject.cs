@@ -36,7 +36,7 @@ namespace JssonPortAddIn
             }
         }
 
-        internal JObject ToJsonObject()
+        internal JToken ToJsonObject()
         {
             return new JObject(
                 from v in vals
