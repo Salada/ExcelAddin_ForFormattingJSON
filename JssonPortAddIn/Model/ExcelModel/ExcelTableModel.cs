@@ -4,19 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
+using JssonPortAddIn.Model.ExcelModel;
 
 namespace JssonPortAddIn
 {
-    class ExcelTableModel
+    class ExcelTableModel : IConvertableJson
     {
-        private dynamic worksheet; // this is com object. then, must only use dynamic type.
+        private WorkSheetModel parentModel; // this is com object. then, must only use dynamic type.
         
         private List<SimpleExpandoObject> dataObjects;
-        public string CodeName
-        {
-            get;
-            set;
-        }
+
         public NameCollection RowNames
         {
             get;
@@ -29,34 +26,25 @@ namespace JssonPortAddIn
             set;
         }
 
-        public string SheetName
-        {
-            get;
-            set;
-        }
 
         public ExcelTableModel()
         {
-            throw new NotImplementedException();
+            this.dataObjects = new List<SimpleExpandoObject>();
         }
 
 
-        public ExcelTableModel(dynamic worksheet)
+        public ExcelTableModel(WorkSheetModel parentModel) : this()
         {
-            this.worksheet = worksheet;
-            this.dataObjects = new List<SimpleExpandoObject>();
-            
+            this.parentModel = parentModel;
+
             initializeObject();
         }
 
         private void initializeObject()
         {
-            this.SheetName = this.worksheet.Name;
-            this.CodeName = this.worksheet.CodeName;
-            this.TableName = this.worksheet.Cells.ListObject.Name;
+            this.TableName = this.parentModel.WorkSheet.Cells.ListObject.Name;
 
-
-            dynamic tableRange = this.worksheet.Cells.ListObject.Range;
+            dynamic tableRange = this.parentModel.WorkSheet.Cells.ListObject.Range;
             decimal count = 1;
 
             foreach (dynamic row_data in tableRange.Rows)
@@ -80,9 +68,16 @@ namespace JssonPortAddIn
             }
         }
 
-        public void ToJsonObject()
+        public JObject ToJsonObject()
         {
-            
+            JObject rss = new JObject();
+
+            JArray dataArr = new JArray(from p in this.dataObjects 
+                                        select p.ToJsonObject());
+
+            rss.Add(new JProperty(TableName, dataArr));
+            return rss;
         }
+            
     }
 }

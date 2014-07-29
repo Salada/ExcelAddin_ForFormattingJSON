@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
@@ -33,6 +34,14 @@ namespace JssonPortAddIn
             {
                 return false;
             }
+        }
+
+        internal JObject ToJsonObject()
+        {
+            return new JObject(
+                from v in vals
+                select new JProperty((string)v.Key, v.Value)
+                );
         }
     }
 }

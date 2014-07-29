@@ -158,12 +158,14 @@
     can be found.
   -->
   <ItemGroup>
-    <Compile Include="Model\ExcelTableModel.cs" />
-    <Compile Include="Model\NameCollection.cs" />
+    <Compile Include="Model\ExcelModel\ExcelFileModel.cs" />
+    <Compile Include="Model\ExcelModel\ExcelTableModel.cs" />
+    <Compile Include="Model\ExcelModel\IConvertableJson.cs" />
+    <Compile Include="Model\ExcelModel\NameCollection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Model\WorkSheetModel.cs" />
+    <Compile Include="Model\ExcelModel\WorkSheetModel.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -173,7 +175,7 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="RbnFileManage.resx">
+    <EmbeddedResource Include="View\RbnFileManage.resx">
       <DependentUpon>RbnFileManage.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="JssonPortAddIn_TemporaryKey.pfx" />
@@ -185,10 +187,10 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="RbnFileManage.cs">
+    <Compile Include="View\RbnFileManage.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="RbnFileManage.Designer.cs">
+    <Compile Include="View\RbnFileManage.Designer.cs">
       <DependentUpon>RbnFileManage.cs</DependentUpon>
     </Compile>
     <Compile Include="Model\SimpleExpandoObject.cs" />
@@ -202,6 +204,9 @@
       <DependentUpon>ThisAddIn.Designer.xml</DependentUpon>
     </Compile>
     <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Model\JSONModel\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -6,6 +6,7 @@ using Microsoft.Office.Tools.Ribbon;
 using System.Windows.Forms;
 using System.Dynamic;
 using System.Collections;
+using JssonPortAddIn.Model;
 
 namespace JssonPortAddIn
 {
@@ -18,13 +19,14 @@ namespace JssonPortAddIn
 
         private void button1_Click(object sender, RibbonControlEventArgs e)
         {
-            
-            dynamic worksheets = Globals.ThisAddIn.Application.Worksheets;
 
-            dynamic a = worksheets[2];
+            var excel = new ExcelFileModel();
+            MessageBox.Show(excel.ToJsonObject().ToString());
+        }
 
-            var table = new ExcelTableModel(worksheets[2]);
-            MessageBox.Show("Hello");
+        private void button2_Click(object sender, RibbonControlEventArgs e)
+        {
+
         }
     }
 }

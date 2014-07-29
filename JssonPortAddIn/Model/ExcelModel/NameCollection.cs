@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace JssonPortAddIn
 {
@@ -26,5 +22,15 @@ namespace JssonPortAddIn
         {
             this.rowNames = rowNames.Clone();
         }
+
+        public IEnumerable<string> Select()
+        {
+            for (int i = 0; i < rowNames.Length; ++i)
+            {
+                yield return this[i];
+            }
+        }
+
+        public int Length { get { return rowNames.Length; }  }
     }
 }
